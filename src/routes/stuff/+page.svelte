@@ -11,6 +11,13 @@
 	function hideMissingImage(event) {
 		event.currentTarget.parentElement.remove();
 	}
+
+	function handleCoverWheel(event) {
+		if (Math.abs(event.deltaY) > Math.abs(event.deltaX)) {
+			event.preventDefault();
+			event.currentTarget.scrollLeft += event.deltaY;
+		}
+	}
 </script>
 
 <main class="stuff">
@@ -38,17 +45,15 @@
 	<div class="right-side">
 		<section class="media-section music" aria-labelledby="music-heading">
 			<h2 id="music-heading">probably listening to...</h2>
-			<div class="covers">
+			<div class="covers" onwheel={handleCoverWheel}>
 				{#each data.songs as song (song.image)}
 					<figure>
 						<img
 							src={mediaPath('songs', song.image)}
 							alt={song.title}
-							title={song.title}
 							loading="lazy"
 							onerror={hideMissingImage}
 						/>
-						<figcaption>{song.title}</figcaption>
 					</figure>
 				{/each}
 			</div>
@@ -56,17 +61,15 @@
 
 		<section class="media-section reading" aria-labelledby="reading-heading">
 			<h2 id="reading-heading">recent reads...</h2>
-			<div class="covers">
+			<div class="covers" onwheel={handleCoverWheel}>
 				{#each data.books as book (book.image)}
 					<figure>
 						<img
 							src={mediaPath('recent reads', book.image)}
 							alt={book.title}
-							title={book.title}
 							loading="lazy"
 							onerror={hideMissingImage}
 						/>
-						<figcaption>{book.title}</figcaption>
 					</figure>
 				{/each}
 			</div>
@@ -90,7 +93,6 @@
 		min-width: 0;
 		min-height: 0;
 		padding: 1.5rem 2rem 0;
-		border-right: 1px solid var(--bg-3);
 	}
 
 	h1,
@@ -146,29 +148,32 @@
 		overflow: hidden;
 	}
 
-	.music {
-		border-bottom: 1px solid var(--bg-3);
-	}
-
 	.covers {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(5rem, 7rem));
-		align-content: center;
-		justify-content: center;
+		display: flex;
+		align-items: center;
 		gap: 1rem;
 		flex: 1;
 		min-height: 0;
+		overflow-x: auto;
+		overflow-y: hidden;
+		scrollbar-width: none;
+		-ms-overflow-style: none;
+		overscroll-behavior-x: contain;
+	}
+
+	.covers::-webkit-scrollbar {
+		display: none;
 	}
 
 	.covers figure {
-		position: relative;
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		flex: 0 0 7rem;
+		width: 7rem;
 		min-width: 0;
 		max-height: 9rem;
 		margin: 0;
-		outline-offset: 3px;
 	}
 
 	.covers img {
@@ -176,23 +181,6 @@
 		max-width: 100%;
 		max-height: 9rem;
 		object-fit: contain;
-	}
-
-	.covers figcaption {
-		position: absolute;
-		inset: auto 0 0;
-		padding: 0.35rem;
-		background: var(--bg-2);
-		color: var(--txt-0);
-		font-size: 0.875rem;
-		line-height: 1.25;
-		text-align: center;
-		opacity: 0;
-		pointer-events: none;
-	}
-
-	.covers figure:hover figcaption {
-		opacity: 1;
 	}
 
 	@media (max-width: 720px) {
@@ -208,8 +196,6 @@
 		.clicks {
 			min-height: 60vh;
 			padding: 1.5rem 1.5rem 0;
-			border-right: 0;
-			border-bottom: 1px solid var(--bg-3);
 		}
 
 		.photo-scroll {
@@ -226,13 +212,13 @@
 			padding: 1.5rem;
 		}
 
-		.music {
-			border-bottom: 1px solid var(--bg-3);
+		.covers {
+			gap: 0.75rem;
 		}
 
-		.covers {
-			grid-template-columns: repeat(auto-fit, minmax(4.5rem, 6rem));
-			gap: 0.75rem;
+		.covers figure {
+			flex-basis: 6rem;
+			width: 6rem;
 		}
 	}
 </style>
