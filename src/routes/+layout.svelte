@@ -81,26 +81,32 @@
 	image={page.data.meta.image}
 />
 
-<header
-	class:home={page.url.pathname === '/'}
-	inert={page.url.pathname === '/'}
+{#if page.url.pathname !== resolve('/')}
+	<header
+		class:home={page.url.pathname === resolve('/')}
+		inert={page.url.pathname === resolve('/')}
+		data-sveltekit-noscroll
+	>
+		<div class="row">
+			<a class="pfp" href={resolve('/')} aria-label="homepage">
+				<LogoAnimated skipInitialAnimation={true} />
+			</a>
+			<a class="name" href={resolve('/')}>_manyuuu</a>
+		</div>
+		<nav>
+			{#each pages as { name, path } (path)}
+				<a class="nav" href={path}>
+					<Arrow /><span class="slash" aria-hidden="true">/</span>{name}
+				</a>
+			{/each}
+		</nav>
+	</header>
+{/if}
+<div
+	class="container"
+	style:transform={page.url.pathname === resolve('/') ? 'translateY(5rem)' : undefined}
 	data-sveltekit-noscroll
 >
-	<div class="row">
-		<a class="pfp" href={resolve('/')} aria-label="homepage">
-			<LogoAnimated skipInitialAnimation={true} />
-		</a>
-		<a class="name" href={resolve('/')}>to_manyuuu</a>
-	</div>
-	<nav>
-		{#each pages as { name, path } (path)}
-			<a class="nav" href={path}>
-				<Arrow /><span class="slash" aria-hidden="true">/</span>{name}
-			</a>
-		{/each}
-	</nav>
-</header>
-<div class="container" data-sveltekit-noscroll>
 	{#key page.url.pathname}
 		<div
 			class="transition"

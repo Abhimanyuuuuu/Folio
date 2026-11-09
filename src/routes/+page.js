@@ -1,7 +1,7 @@
 export function load() {
 	return {
 		meta: {
-			title: 'to_manyuuu',
+			title: '_manyuuu',
 			description: 'abhimanyu — cs student at du in new delhi.'
 		}
 	};

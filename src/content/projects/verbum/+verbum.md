@@ -3,7 +3,7 @@ published: true
 name: verbum
 description: making technical education more accessible through context-aware, domain-specific language switching translations
 thumbnail: verbum.png
-images: [verbum.png]
+images: [verbum.png,verbum1.png,verbum2.png,verbum3.png]
 ---
 
 Verbum (Latin for *words*) is a desktop application that makes technical educational content easier to understand, without losing the terminology that gives it meaning. It combines NLP, Named Entity Recognition, terminology preservation, and language models to translate technical material into different language styles while keeping important technical expressions intact.

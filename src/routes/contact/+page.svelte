@@ -11,7 +11,7 @@
 	let emailCopied = $state(false);
 	let discordCopied = $state(false);
 
-	const email = 'alex@example.com';
+	const email = 'YOUR_EMAIL_ADDRESS';
 
 	const handleSubmit = async (data) => {
 		data.preventDefault();

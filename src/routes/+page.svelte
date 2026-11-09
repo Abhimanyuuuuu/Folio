@@ -16,7 +16,7 @@
 	<AsciiField {burst} />
 	<div class="container">
 		<div class="row">
-			<h1>to_manyuuu</h1>
+			<h1>_manyuuu</h1>
 			<div class="logo">
 				<LogoAnimated onAnimationComplete={handleLogoAnimationComplete} />
 			</div>

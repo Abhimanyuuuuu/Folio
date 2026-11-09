@@ -3,7 +3,7 @@ published: true
 name: astrum
 description: An adaptive, cadence-aware framework for exoplanet transit analysis using Kepler light curves.
 thumbnail: astrum.png
-images: [astrum.png]
+images: [astrum.png, example_long_heldout.png, long_drift_recovery_example.png, long_expected_vs_observed_oracle_response.png, long_recovery_preservation_tradeoff.png, long_routing_threshold_sensitivity.png, long_test_workload_vs_catch.png, long_two_stage_workload_catch.png, example_short_heldout.png, short_drift_recovery_example.png, short_recovery_preservation_tradeoff.png, short_test_workload_vs_catch.png, short_two_stage_workload_catch.png, expected_oracle_snr_distribution.png, heldout_transit_preservation.png, test_score_distributions.png, transit_preservation_boxplots.png]
 github: [YOUR_GITHUB_URL]
 date: 2026-11-09
 ---

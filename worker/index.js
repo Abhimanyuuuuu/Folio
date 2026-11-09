@@ -59,7 +59,7 @@ export async function fetchInspo(convexUrl, collectionNames) {
 // data-level>, per-day counts from the matching <tool-tip> elements.
 export async function fetchGithub(username) {
 	const res = await fetch(`https://github.com/users/${username}/contributions`, {
-		headers: { 'User-Agent': 'to_manyuuu portfolio worker' }
+		headers: { 'User-Agent': '_manyuuu portfolio worker' }
 	});
 	if (!res.ok) throw new Error(`github contributions: HTTP ${res.status}`);
 	const html = await res.text();

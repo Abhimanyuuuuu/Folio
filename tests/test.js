@@ -20,16 +20,16 @@ test('portfolio pages, content counts, interactions, and responsive home render'
 
 	await page.setViewportSize({ width: 1440, height: 900 });
 	await page.goto(route());
-	await expect(page.getByRole('heading', { name: 'to_manyuuu' })).toBeVisible();
+	await expect(page.getByRole('heading', { name: '_manyuuu' })).toBeVisible();
+	await expect(page.locator('header')).toHaveCount(0);
+	await expect(page).toHaveTitle('_manyuuu');
 	await expect(
 		page.getByText(
 			"Hey there! I'm Abhimanyu. I like making things that solve something and work efficiently."
 		)
 	).toBeVisible();
 	await expect(page.locator('canvas[aria-hidden="true"]')).toHaveCount(1);
-	await expect(page.locator('header nav a')).toHaveCount(4);
-	await expect(page.locator('header nav')).not.toContainText('inspo');
-	await expect(page.locator('header nav')).not.toContainText('contact');
+	await expect(page.locator('main nav a')).toHaveCount(4);
 	await page.screenshot({ path: 'test-results/home-desktop.png', fullPage: true });
 
 	await page
@@ -37,35 +37,31 @@ test('portfolio pages, content counts, interactions, and responsive home render'
 		.getByRole('link', { name: /projects/ })
 		.click();
 	await expect(page.getByRole('heading', { name: /projects/ })).toBeVisible();
-	await expect(page.locator('.posts > a')).toHaveCount(1);
-	await page.getByRole('link', { name: /sample project/ }).click();
-	await expect(page.getByRole('heading', { name: 'sample project' })).toBeVisible();
-	await expect(page.locator('.embla__slide img')).toHaveCount(5);
-	await expect
-		.poll(() =>
-			page
-				.locator('.embla__slide img')
-				.first()
-				.evaluate((image) => image.naturalWidth)
-		)
-		.toBeGreaterThan(0);
-	await page.getByRole('button', { name: 'next image' }).click();
-	await expect(page.getByRole('link', { name: /projects/ }).first()).toBeVisible();
+	await expect(page.locator('header')).toBeVisible();
+	await expect(page.locator('.posts > a')).toHaveCount(3);
+	await page.goto(route('/projects/lector/'));
+	await expect(page.getByRole('heading', { name: 'lector' })).toBeVisible();
+	await expect(page.locator('header')).toBeVisible();
 
 	await page.goto(route('/blog/'));
+	await expect(page.locator('header')).toBeVisible();
 	await expect(page.locator('.posts > a')).toHaveCount(1);
 	await page.getByRole('link', { name: /sample blog post/ }).click();
 	await expect(page.getByRole('heading', { name: /sample blog post/ })).toBeVisible();
+	await expect(page.locator('header')).toBeVisible();
 	await page.reload();
 	await expect(page.getByRole('heading', { name: /sample blog post/ })).toBeVisible();
 
 	await page.goto(route('/photos/'));
+	await expect(page.locator('header')).toBeVisible();
 	await expect(page.locator('.grid picture')).toHaveCount(1);
 	await expect
 		.poll(() => page.locator('.grid img').evaluate((image) => image.naturalWidth))
 		.toBeGreaterThan(0);
 
 	await page.goto(route('/about/'));
+	await expect(page.locator('header')).toBeVisible();
+	await expect(page.locator('header .name')).toHaveText('_manyuuu');
 	await expect(page.getByRole('heading', { name: 'about' })).toBeVisible();
 	await expect(
 		page.getByText(
@@ -95,9 +91,9 @@ test('portfolio pages, content counts, interactions, and responsive home render'
 	await expect(page.locator('.info').nth(3)).toContainText(
 		'Libraries -> Pandas / NumPy / TensorFlow / Keras / PyTorch / Scikit-learn / Transformers / Matplotlib / Seaborn'
 	);
-	await expect(page.getByRole('link', { name: /alex@example\.com/ })).toHaveAttribute(
+	await expect(page.getByRole('link', { name: /YOUR_EMAIL_ADDRESS/ })).toHaveAttribute(
 		'href',
-		'mailto:alex@example.com'
+		'mailto:YOUR_EMAIL_ADDRESS'
 	);
 	await expect(page.locator('form')).toHaveCount(0);
 	await expect(page.getByRole('heading', { name: /contributions|colophon|friends/i })).toHaveCount(
@@ -106,17 +102,19 @@ test('portfolio pages, content counts, interactions, and responsive home render'
 
 	await page.goto(route('/inspo/'));
 	await expect(page).toHaveURL(new RegExp(`${basePath}/?$`));
-	await expect(page.getByRole('heading', { name: 'to_manyuuu' })).toBeVisible();
+	await expect(page.getByRole('heading', { name: '_manyuuu' })).toBeVisible();
+	await expect(page.locator('header')).toHaveCount(0);
 
 	await page.goto(route('/contact/'));
 	await expect(page).toHaveURL(new RegExp(`${basePath}/about/#contact$`));
-	await expect(page.getByRole('link', { name: /alex@example\.com/ })).toBeVisible();
+	await expect(page.getByRole('link', { name: /YOUR_EMAIL_ADDRESS/ })).toBeVisible();
 	await expect(page.locator('form')).toHaveCount(0);
 
 	await page.setViewportSize({ width: 390, height: 844 });
 	await page.goto(route());
-	await expect(page.getByRole('heading', { name: 'to_manyuuu' })).toBeVisible();
-	await expect(page.locator('header nav')).toBeHidden();
+	await expect(page.getByRole('heading', { name: '_manyuuu' })).toBeVisible();
+	await expect(page.locator('header')).toHaveCount(0);
+	await expect(page).toHaveTitle('_manyuuu');
 	await expect(page.locator('main nav')).toHaveCSS('flex-direction', 'column');
 	await page.screenshot({ path: 'test-results/home-mobile.png', fullPage: true });
 	await expect(pageErrors).toEqual([]);

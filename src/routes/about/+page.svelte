@@ -12,6 +12,7 @@
 			icon: LinkedinIcon
 		}
 	];
+	const emailAddress = 'YOUR_EMAIL_ADDRESS';
 
 	const tech = {
 		Languages: [
@@ -76,7 +77,7 @@
 		</div>
 	{/each}
 	<h2 id="contact">contact</h2>
-	<ContactEmail email="alex@example.com" />
+	<ContactEmail email={emailAddress} />
 </main>
 
 <style>

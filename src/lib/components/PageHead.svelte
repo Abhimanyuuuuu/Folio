@@ -7,14 +7,14 @@
 <svelte:head>
 	<title>{title}</title>
 	<meta name="description" content={description} />
-	<meta property="og:site_name" content="to_manyuuu" />
+	<meta property="og:site_name" content="_manyuuu" />
 	<meta property="og:title" content={title} />
 	<meta property="og:type" content={type} />
 	<meta property="og:description" content={description} />
 	<meta property="og:url" content={'https://example.com' + $page.url.pathname} />
 	<meta name="twitter:card" content="summary" />
-	<meta name="twitter:site" content="@to_manyuuu" />
-	<meta name="twitter:creator" content="@to_manyuuu" />
+	<meta name="twitter:site" content="@_manyuuu" />
+	<meta name="twitter:creator" content="@_manyuuu" />
 	<meta name="twitter:title" content={title} />
 	<meta name="twitter:description" content={description} />
 	{#if image}

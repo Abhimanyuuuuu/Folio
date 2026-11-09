@@ -1,4 +1,4 @@
-# to_manyuuu portfolio
+# \_manyuuu portfolio
 
 A personal portfolio starter based on the original `www` SvelteKit project. The original GPL-3.0 license is retained. The interface and styling are preserved; the content has been replaced with neutral examples.
 
@@ -34,7 +34,7 @@ For a local project-site build, set `BASE_PATH=/repository-name` before `bun run
 
 Replace `https://example.com` in `src/lib/components/PageHead.svelte` and `src/routes/blog/rss.xml/+server.js` when choosing a real site domain.
 
-The Inspo page reads its one-item fixture from `static/inspo.json`; update that file to change the example. The contribution graph reads `static/github.json`, which currently contains a zero-activity placeholder because the original live GitHub scraping depended on the Cloudflare Worker. The About page provides a mailto link to `alex@example.com`.
+The Inspo page reads its one-item fixture from `static/inspo.json`; update that file to change the example. The contribution graph reads `static/github.json`, which currently contains a zero-activity placeholder because the original live GitHub scraping depended on the Cloudflare Worker. Set the About page's `emailAddress` value before publishing your public contact link.
 
 ## content guide
 
