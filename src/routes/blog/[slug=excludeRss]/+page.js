@@ -2,6 +2,20 @@ import { nameFromPath, importOgImage } from '$lib/js/posts.js';
 import { error } from '@sveltejs/kit';
 import { dev } from '$app/environment';
 
+export const prerender = 'auto';
+
+export async function entries() {
+	const modules = import.meta.glob('/src/content/blog/*/*.md');
+	const entries = await Promise.all(
+		Object.entries(modules).map(async ([path, resolver]) => {
+			const post = await resolver();
+			return post.metadata.published ? { slug: nameFromPath(path) } : null;
+		})
+	);
+
+	return entries.filter(Boolean);
+}
+
 export async function load({ params }) {
 	const modules = import.meta.glob('/src/content/blog/*/*.md');
 

@@ -18,7 +18,7 @@
 	},
 	"vars": {
 		"INSPO_COLLECTIONS": "web design, visual art",
-		"GITHUB_USERNAME": "to_manyuuu"
+		"GITHUB_USERNAME": "Abhimanyuuuuu"
 	}
 	// CONVEX_URL is a secret: `wrangler secret put CONVEX_URL` (and .dev.vars locally)
 }

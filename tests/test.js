@@ -42,15 +42,16 @@ test('portfolio pages, content counts, interactions, and responsive home render'
 	await page.goto(route('/projects/lector/'));
 	await expect(page.getByRole('heading', { name: 'lector' })).toBeVisible();
 	await expect(page.locator('header')).toBeVisible();
+	await expect(page.locator('.head-2 .links a').filter({ hasText: 'github' })).toHaveCount(0);
+	for (const slug of ['astrum', 'verbum']) {
+		await page.goto(route(`/projects/${slug}/`));
+		await expect(page.getByRole('heading', { name: slug })).toBeVisible();
+		await expect(page.locator('.head-2 .links a').filter({ hasText: 'github' })).toHaveCount(0);
+	}
 
 	await page.goto(route('/blog/'));
 	await expect(page.locator('header')).toBeVisible();
-	await expect(page.locator('.posts > a')).toHaveCount(1);
-	await page.getByRole('link', { name: /sample blog post/ }).click();
-	await expect(page.getByRole('heading', { name: /sample blog post/ })).toBeVisible();
-	await expect(page.locator('header')).toBeVisible();
-	await page.reload();
-	await expect(page.getByRole('heading', { name: /sample blog post/ })).toBeVisible();
+	await expect(page.locator('.posts > a')).toHaveCount(0);
 
 	await page.goto(route('/photos/'));
 	await expect(page.locator('header')).toBeVisible();
@@ -69,14 +70,18 @@ test('portfolio pages, content counts, interactions, and responsive home render'
 		)
 	).toBeVisible();
 	await expect(page.locator('main h2')).toHaveText(['links', 'tech', 'contact']);
-	await expect(page.locator('.links .text')).toHaveText(['github', 'linkedin']);
+	await expect(page.locator('.links .text')).toHaveText(['GitHub', 'LinkedIn']);
 	await expect(page.locator('.links a').nth(0)).toHaveAttribute(
 		'href',
-		'https://github.com/to_manyuuu'
+		'https://github.com/Abhimanyuuuuu'
 	);
 	await expect(page.locator('.links a').nth(1)).toHaveAttribute(
 		'href',
-		'https://www.linkedin.com/in/REPLACE_WITH_LINKEDIN_USERNAME/'
+		'https://www.linkedin.com/in/abhimanyu-nain-295b6321b/'
+	);
+	await expect(page.locator('meta[property="og:url"]')).toHaveAttribute(
+		'content',
+		`https://abhimanyuuuuu.github.io${basePath}/about/`
 	);
 	await expect(page.locator('.info')).toHaveCount(5);
 	await expect(page.locator('.info').nth(0)).toContainText(
@@ -91,9 +96,9 @@ test('portfolio pages, content counts, interactions, and responsive home render'
 	await expect(page.locator('.info').nth(3)).toContainText(
 		'Libraries -> Pandas / NumPy / TensorFlow / Keras / PyTorch / Scikit-learn / Transformers / Matplotlib / Seaborn'
 	);
-	await expect(page.getByRole('link', { name: /YOUR_EMAIL_ADDRESS/ })).toHaveAttribute(
+	await expect(page.getByRole('link', { name: /nain\.abhi2005@gmail\.com/ })).toHaveAttribute(
 		'href',
-		'mailto:YOUR_EMAIL_ADDRESS'
+		'mailto:nain.abhi2005@gmail.com'
 	);
 	await expect(page.locator('form')).toHaveCount(0);
 	await expect(page.getByRole('heading', { name: /contributions|colophon|friends/i })).toHaveCount(
@@ -107,7 +112,7 @@ test('portfolio pages, content counts, interactions, and responsive home render'
 
 	await page.goto(route('/contact/'));
 	await expect(page).toHaveURL(new RegExp(`${basePath}/about/#contact$`));
-	await expect(page.getByRole('link', { name: /YOUR_EMAIL_ADDRESS/ })).toBeVisible();
+	await expect(page.getByRole('link', { name: /nain\.abhi2005@gmail\.com/ })).toBeVisible();
 	await expect(page.locator('form')).toHaveCount(0);
 
 	await page.setViewportSize({ width: 390, height: 844 });

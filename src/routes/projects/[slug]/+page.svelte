@@ -33,6 +33,10 @@
 		if (event.key === 'ArrowLeft') emblaPrev();
 		else if (event.key === 'ArrowRight') emblaNext();
 	}
+
+	function isExternalUrl(value) {
+		return typeof value === 'string' && /^https?:\/\//i.test(value.trim());
+	}
 </script>
 
 <svelte:window onkeydown={onKeydown} />
@@ -45,15 +49,15 @@
 		<div class="row">
 			<h1>{metadata.name}</h1>
 			<div class="links">
-				{#if metadata.website}
+				{#if isExternalUrl(metadata.website)}
 					<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- project metadata holds external URLs -->
-					<a class="external" href={metadata.website} target="_blank">
+					<a class="external" href={metadata.website.trim()} target="_blank">
 						site<Arrow glyph="/>" />
 					</a>
 				{/if}
-				{#if metadata.github}
+				{#if isExternalUrl(metadata.github)}
 					<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- project metadata holds external URLs -->
-					<a class="external" href={metadata.github} target="_blank">
+					<a class="external" href={metadata.github.trim()} target="_blank">
 						github<Arrow glyph="/>" />
 					</a>
 				{/if}

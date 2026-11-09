@@ -32,15 +32,15 @@ The `.github/workflows/pages.yml` workflow builds on pushes to `main` or `master
 
 For a local project-site build, set `BASE_PATH=/repository-name` before `bun run build`. A root deployment uses an empty `BASE_PATH`. All pages are generated at build time with trailing-slash directory output, so direct page refreshes are served as static `index.html` files. GitHub Pages cannot run the Cloudflare Worker, Convex refresh, or server APIs at request time.
 
-Replace `https://example.com` in `src/lib/components/PageHead.svelte` and `src/routes/blog/rss.xml/+server.js` when choosing a real site domain.
+The canonical URL, Open Graph URLs, and RSS feed use `https://abhimanyuuuuu.github.io` with the configured base path.
 
-The Inspo page reads its one-item fixture from `static/inspo.json`; update that file to change the example. The contribution graph reads `static/github.json`, which currently contains a zero-activity placeholder because the original live GitHub scraping depended on the Cloudflare Worker. Set the About page's `emailAddress` value before publishing your public contact link.
+The Inspo page reads its one-item fixture from `static/inspo.json`; update that file to change the example. The contribution graph reads `static/github.json`, which contains a zero-activity fixture because live GitHub data depends on the Cloudflare Worker. The About page's `emailAddress` value controls its public mailto link.
 
 ## content guide
 
 ### Add a project
 
-Create `src/content/projects/<slug>/+<slug>.md`, and put its images in that same folder. Copy `src/content/projects/tabletop/+tabletop.md` as the schema example. Keep `published`, `name`, `description`, `thumbnail`, `images`, `github`, `website`, and `date`. `thumbnail` and each `images` item must name an image file in the project folder; the first image is also used for social metadata. `github` and `website` can use `https://example.com` until you have real URLs. The project detail page supports additional markdown files in that folder for linked documents.
+Create `src/content/projects/<slug>/+<slug>.md`, and put its images in that same folder. Keep `published`, `name`, `description`, `thumbnail`, `images`, and `date`; `github` and `website` may be left empty until you have real HTTPS URLs. Empty or non-URL values do not render as links. `thumbnail` and each `images` item must name an image file in the project folder; the first image is also used for social metadata. The project detail page supports additional markdown files in that folder for linked documents.
 
 The retained sample project also includes `src/content/projects/tabletop/details.md` as a supplementary document-route example; it is not a second project.
 

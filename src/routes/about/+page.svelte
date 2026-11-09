@@ -5,14 +5,14 @@
 	import ContactEmail from '$lib/components/ContactEmail.svelte';
 
 	const links = [
-		{ name: 'github', url: 'https://github.com/to_manyuuu', icon: GithubIcon },
+		{ name: 'GitHub', url: 'https://github.com/Abhimanyuuuuu', icon: GithubIcon },
 		{
-			name: 'linkedin',
-			url: 'https://www.linkedin.com/in/REPLACE_WITH_LINKEDIN_USERNAME/',
+			name: 'LinkedIn',
+			url: 'https://www.linkedin.com/in/abhimanyu-nain-295b6321b/',
 			icon: LinkedinIcon
 		}
 	];
-	const emailAddress = 'YOUR_EMAIL_ADDRESS';
+	const emailAddress = 'nain.abhi2005@gmail.com';
 
 	const tech = {
 		Languages: [

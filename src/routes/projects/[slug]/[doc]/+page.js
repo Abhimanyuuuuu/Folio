@@ -1,5 +1,7 @@
 import { error } from '@sveltejs/kit';
 
+export const prerender = 'auto';
+
 export function entries() {
 	return Object.keys(import.meta.glob('/src/content/projects/*/*.md'))
 		.filter((path) => !path.split('/').at(-1).startsWith('+'))

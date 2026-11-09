@@ -9,7 +9,7 @@ export async function GET() {
 
 	posts = posts.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-	const siteUrl = 'https://example.com' + base;
+	const siteUrl = 'https://abhimanyuuuuu.github.io' + base;
 	const rssContent = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 	<channel>
