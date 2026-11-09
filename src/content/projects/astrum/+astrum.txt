@@ -1,0 +1,152 @@
+---
+published: true
+name: astrum
+description: An adaptive, cadence-aware framework for exoplanet transit analysis using Kepler light curves.
+thumbnail: astrum.png
+images: [astrum.png]
+github: [YOUR_GITHUB_URL]
+date: 2026-11-09
+---
+
+Astrum is an adaptive exoplanet transit-analysis framework built around NASA's Kepler light-curve data. It combines cadence-aware preprocessing, specialized drift correction, neural transit detection and signal-reliability diagnostics into one modular pipeline. Rather than treating transit detection as a single classification problem, Astrum looks at the entire analysis process: how the data is prepared, how much it can be trusted, which models should process it and when additional computation is worth performing.
+
+I spent around two months building Astrum, moving from exploring astronomical datasets and reading research papers to developing and evaluating a complete Python framework.
+
+## the idea
+
+I came across NASA's public datasets quite randomly. While looking through them, I found astronomical light curves and eventually learned about the transit method of detecting exoplanets. The idea immediately caught my attention. You observe a star, look for tiny periodic dips in its brightness and use those dips to identify planets passing in front of it. I liked how simple the underlying idea was, while the science and engineering behind making those measurements reliable were much more complicated.
+
+After deciding to build a project around it, I started reading research papers on exoplanet detection and light-curve processing. I found a lot of work focused on improving transit detection models and reducing noise in astronomical observations. Those are obviously important problems, but I became interested in something slightly different.
+
+A typical transit-analysis workflow involves much more than running a detector. Light curves can contain instrumental drift, stellar variability, missing observations and different sampling cadences. Models can also behave differently depending on the quality of the input. And when processing large astronomical datasets, repeatedly running expensive models or additional analysis stages can become a significant computational problem.
+
+This made me wonder: **what if the analysis pipeline itself could understand the data it was processing?**
+
+Instead of applying the same processing to every light curve, could it identify the observation cadence, select an appropriate correction method, assess signal quality and decide when deeper analysis might be useful?
+
+That became the central idea behind Astrum.
+
+## the framework
+
+I designed Astrum as a modular, adaptive computation framework rather than a single end-to-end classifier.
+
+The pipeline consists of five main processing stages:
+
+1. **Cadence routing:** Identifies whether an observation is long or short cadence using its timestamp intervals.
+2. **Drift correction:** Selects a specialized correction method based on the inferred cadence.
+3. **Transit detection:** Passes the corrected light curve through its corresponding neural detector.
+4. **Reliability assessment:** Evaluates signal-quality characteristics and provides diagnostics about potentially unreliable observations and detector outputs.
+5. **Adaptive computation:** Allows additional models and analysis stages to be invoked selectively according to configurable execution policies and computational budgets.
+
+An important design decision was keeping these components independent. Astrum does not force every observation through an identical sequence of expensive operations, nor does it require a mandatory final prediction or verification stage. Additional computation can be integrated when a particular analysis needs it.
+
+## the data
+
+I built the preprocessing pipeline around Kepler light curves, starting from raw CSV observations and converting them into fixed-length, model-ready segments.
+
+The dataset contains approximately 4.05 million raw observations from 31 stars. The preprocessing workflow handles timestamp validation, duplicate and invalid observations, cadence identification, signal normalization, gap-aware segmentation and model-input generation.
+
+A particularly important part was handling observation gaps. Astronomical time series are not always continuously sampled, and treating a large gap as though the signal continued normally can create misleading segments. Astrum uses gap-aware segmentation to keep these discontinuities from being silently treated as continuous observations.
+
+The resulting dataset contains approximately 3.69 million processed observations and 9,468 segments.
+
+For detector development and evaluation, I also worked with paired synthetic transit injections and control observations. This allowed me to evaluate how well the models recover controlled transit-like signals across different depths, durations and background-noise conditions. The evaluation uses star-disjoint splits so that test observations come from stars not used during training.
+
+## transit detection
+
+I developed two lightweight neural detectors instead of forcing one architecture to handle both cadence types.
+
+**Long cadence — MS-SepResCNN**
+
+For long-cadence observations, I developed MS-SepResCNN, a multi-scale separable residual convolutional neural network. It uses multi-scale feature extraction, separable convolutions and residual connections to identify transit-like patterns while keeping the architecture relatively compact.
+
+On the held-out evaluation set, it achieved:
+
+- ROC-AUC: 0.922
+- F1-score: 0.861
+- Balanced accuracy: 93.19%
+
+**Short cadence — three-block 1D CNN**
+
+Short-cadence observations have a much higher temporal resolution, so I developed a separate three-block 1D CNN for this processing path.
+
+Its held-out evaluation achieved:
+
+- ROC-AUC: 0.940
+- F1-score: 0.885
+- Balanced accuracy: 89.11%
+
+Keeping the detectors separate allowed me to specialize their architectures around the characteristics of each sampling regime rather than compromising with a shared model.
+
+These results come from synthetic injection-control evaluation, not confirmed astrophysical planet detections. The short-cadence test set also contains only two held-out stars, so its results need to be interpreted with that limitation in mind.
+
+## drift correction
+
+One of the more interesting parts of Astrum was realizing that drift correction itself should not necessarily use the same approach for every observation.
+
+For long cadence, I selected a robust rolling-median detrending method. For short cadence, I developed a learned drift estimator using dilated convolutions.
+
+The two approaches were selected through comparative experiments that considered not just how much drift was removed, but also how much of the original transit signal survived the correction.
+
+The selected methods achieved:
+
+| Metric | Long cadence | Short cadence |
+|---|---:|---:|
+| Low-frequency drift suppression | 30.47% | 63.55% |
+| Median transit-depth preservation | 94.50% | 83.02% |
+
+This trade-off mattered to me. A correction method that makes a light curve look smoother is not necessarily a good correction method if it also removes the tiny transit signal we are trying to detect.
+
+The current results come from controlled synthetic-drift experiments. Testing these correction methods on real observations from another mission, particularly TESS, is an important next step for evaluating cross-mission generalization.
+
+## reliability and adaptive computation
+
+This is the part that motivated the framework beyond conventional transit detection.
+
+A detector score alone does not tell us whether the input light curve was reliable, whether its signal was distorted during preprocessing or whether additional analysis would be useful. I wanted Astrum to keep these questions separate.
+
+I implemented a reliability assessment module that evaluates signal-quality characteristics and provides diagnostics for potentially unreliable light-curve segments. The reliability research explored 23 diagnostic predictors, including signal characteristics that can help distinguish different quality conditions.
+
+The reliability output is deliberately separate from the transit detector's candidate score. It is not treated as a calibrated probability that a signal is astrophysically valid.
+
+These diagnostics can also inform the adaptive computation layer. The idea is to avoid spending additional computation indiscriminately and instead make deeper analysis available when the input or detector output warrants it.
+
+I experimented with learned reliability models and adaptive routing policies, but the results did not establish a sufficiently reliable computational advantage over fixed processing. I therefore kept the adaptive architecture extensible and budget-aware without claiming a proven runtime reduction.
+
+I consider this an important distinction: building a system that supports adaptive computation is one achievement; demonstrating that it saves time without compromising analysis quality is another.
+
+## implementation
+
+Astrum started as a collection of research notebooks, but I wanted the final project to be something that could actually be run and extended as software.
+
+I reorganized the research into a modular Python framework, separating ingestion, routing, corrections, detectors, reliability diagnostics, execution policies and scientific output handling.
+
+The framework uses TensorFlow and Keras for neural models, NumPy and Pandas for data processing, SciPy for signal-processing operations and Scikit-learn for evaluation and supporting machine-learning experiments.
+
+I also built a structured scientific archive system. Each processed segment can retain its numerical arrays, detector outputs, diagnostics, execution traces, metadata and generated plots. This makes it possible to inspect not only the final output, but also how the framework arrived at it.
+
+Reproducibility was another major focus. I added configurable execution, checkpoint identity verification, path-independent command-line runs and automated tests. The final software verification passed 29 tests with no failures or skips.
+
+## challenges
+
+The biggest challenge was that every part of the pipeline affected the next one.
+
+For example, improving drift suppression does not necessarily improve transit detection. An aggressive correction can remove genuine transit depths, while a detector that performs well on randomly split segments may not generalize to entirely unseen stars. Similarly, a reliability model can look promising on one dataset but fail when evaluated across different stellar sources.
+
+I had to move away from looking at individual metrics in isolation and start evaluating the trade-offs between components.
+
+Another challenge was separating what the framework could technically do from what the experiments actually demonstrated. Synthetic transit injections are useful for controlled evaluation, but they are not a substitute for confirmed astrophysical observations. The same applies to synthetic drift tests and reliability scores.
+
+I also spent considerable time turning experimental code into a reproducible application without losing the original research artifacts. Preserving notebooks, datasets and checkpoints while creating a cleaner operational structure was an important part of the project.
+
+## thoughts and what's next
+
+Astrum was my attempt to approach exoplanet transit analysis as a complete computational process rather than just a classification task.
+
+I'm particularly happy with the cadence-specific architecture and the decision to evaluate drift correction based on transit preservation, not simply how smooth the resulting light curve looks. I also enjoyed working on the adaptive computation idea because it made me think about reliability and computational cost as part of the scientific workflow itself.
+
+There is still a lot I want to validate. The most important next step is testing the correction methods on real TESS light curves and investigating whether the Kepler-developed models generalize across missions. I also want to expand the star-level evaluation, investigate sensitivity at realistic physical transit depths and conduct a proper fixed-versus-adaptive runtime comparison.
+
+The project took roughly two months, but it brought together several areas I had not worked with together before: astrophysical time-series analysis, signal processing, deep learning, scientific evaluation and software architecture.
+
+What started as randomly browsing NASA's public datasets turned into a much bigger question about how scientific computation should work: not just producing an answer, but understanding the data, the reliability of the result and the computation required to get there.

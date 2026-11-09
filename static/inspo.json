@@ -1,0 +1,18 @@
+{
+	"updatedAt": 1794096000000,
+	"collections": ["design inspiration"],
+	"items": [
+		{
+			"id": "example-inspiration",
+			"collection": "design inspiration",
+			"type": "text",
+			"title": "sample inspiration",
+			"url": "https://example.com",
+			"content": "A useful example is often clear, calm, and easy to navigate.",
+			"imageUrl": null,
+			"imageWidth": null,
+			"imageHeight": null,
+			"dateAdded": 1794096000000
+		}
+	]
+}
