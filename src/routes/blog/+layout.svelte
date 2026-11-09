@@ -7,7 +7,7 @@
 	<link
 		rel="alternate"
 		type="application/rss+xml"
-		title="_manyuuu - blog rss feed"
+		title="/_manyuuu - blog rss feed"
 		href={resolve('/blog/rss.xml')}
 	/>
 </svelte:head>

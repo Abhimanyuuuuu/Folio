@@ -16,35 +16,34 @@
 
 	const tech = {
 		Languages: [
-			'Python',
-			'C',
-			'Java',
-			'JavaScript',
-			'TypeScript',
-			'R',
-			'MATLAB',
-			'SQL (MySQL, SQLite)'
+			'python',
+			'c',
+			'java',
+			'javascript',
+			'typescript',
+			'r',
+			'matlab',
+			'sql (mysql, sqlite)'
 		],
 		Frameworks: [
-			'Next.js',
-			'Node.js',
-			'Electron.js',
-			'Dexie.js',
-			'FastAPI',
-			'IndexedDB',
-			'Streamlit'
+			'next.js',
+			'node.js',
+			'electron.js',
+			'fastapi',
+			'indexeddb',
+			'streamlit'
 		],
-		'Developer Tools': ['Git', 'GitHub', 'VS Code', 'Google Colab', 'Hugging Face Hub', 'Ollama'],
+		'Developer Tools': ['git', 'gitHub', 'docker', 'vs code', 'google colab', 'hugging face hub', 'ollama'],
 		Libraries: [
-			'Pandas',
-			'NumPy',
-			'TensorFlow',
-			'Keras',
-			'PyTorch',
-			'Scikit-learn',
-			'Transformers',
-			'Matplotlib',
-			'Seaborn'
+			'pandas',
+			'numPy',
+			'tensorFlow',
+			'keras',
+			'pyTorch',
+			'scikit-learn',
+			'transformers',
+			'matplotlib',
+			'seaborn'
 		]
 	};
 </script>
@@ -52,8 +51,8 @@
 <main>
 	<h1>about</h1>
 	<p>
-		Hey there! I'm Abhimanyu, a CS student at DU in New Delhi. I'm interested in ML, applied AI,
-		LLMs, local inference and other close topics. I like making things that solve something and work
+		hey there! i'm abhimanyu, a cs student at du at delhi. i'm interested in ml, applied ai,
+		llms, local inference and other close topics. i like making things that solve something and work
 		efficiently.
 	</p>
 	<h2>links</h2>

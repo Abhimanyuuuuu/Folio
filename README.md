@@ -1,4 +1,4 @@
-# \_manyuuu portfolio
+# /\_manyuuu portfolio
 
 A personal portfolio starter based on the original `www` SvelteKit project. The original GPL-3.0 license is retained. The interface and styling are preserved; the content has been replaced with neutral examples.
 
@@ -48,9 +48,13 @@ The retained sample project also includes `src/content/projects/tabletop/details
 
 Create `src/content/blog/<slug>/+<slug>.md`. Copy `src/content/blog/platonic/+platonic.md` and update `published`, `name`, `icon`, `description`, `date`, and optional `tags` and `author`. The directory name determines the URL slug. Use standard Markdown and Svelte components through mdsvex. If you add `ogImage` metadata, keep the image in the same post directory.
 
-### Add a photograph
+### Add photographs
 
-Copy one supported image file (`.avif`, `.gif`, `.heif`, `.jpeg`, `.jpg`, `.png`, `.tiff`, or `.webp`) into `src/content/images/`. The photos page discovers files from that directory automatically and creates responsive image variants at build time. The current gallery does not read per-photo captions or dates.
+Copy supported image files (`.avif`, `.gif`, `.heif`, `.jpeg`, `.jpg`, `.png`, `.tiff`, or `.webp`) into `src/content/images/`. The `/stuff` page discovers them automatically and creates responsive image variants at build time.
+
+### Add song and book covers
+
+Put song or album artwork in `static/songs/` and book covers in `static/recent reads/`. Add each filename and its displayed name to the matching `songs` or `books` array in `src/lib/data/stuff.js`. Filenames with spaces are supported.
 
 ### Add an inspiration entry
 

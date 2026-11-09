@@ -5,7 +5,7 @@ icon: paper
 description: a short example article with the fields used by the blog listing
 date: 2026-01-01
 tags: [notes, example]
-author: _manyuuu
+author: /_manyuuu
 ---
 
 This sample post shows the MDsveX structure used by the blog. Replace this introduction with your own idea.

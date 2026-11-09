@@ -16,7 +16,7 @@
 	<AsciiField {burst} />
 	<div class="container">
 		<div class="row">
-			<h1>_manyuuu</h1>
+			<h1>/_manyuuu</h1>
 			<div class="logo">
 				<LogoAnimated onAnimationComplete={handleLogoAnimationComplete} />
 			</div>
@@ -32,8 +32,8 @@
 			<a class="nav" href={resolve('/blog')}>
 				<Arrow /><span class="slash" aria-hidden="true">/</span>blog
 			</a>
-			<a class="nav" href={resolve('/photos')}>
-				<Arrow /><span class="slash" aria-hidden="true">/</span>photos
+			<a class="nav" href={resolve('/stuff')}>
+				<Arrow /><span class="slash" aria-hidden="true">/</span>stuff
 			</a>
 		</nav>
 	</div>

@@ -17,7 +17,7 @@
 		{ name: 'about', path: resolve('/about') },
 		{ name: 'projects', path: resolve('/projects') },
 		{ name: 'blog', path: resolve('/blog') },
-		{ name: 'photos', path: resolve('/photos') }
+		{ name: 'stuff', path: resolve('/stuff') }
 	];
 
 	let currPage = $state(page.url.pathname);
@@ -88,10 +88,10 @@
 		data-sveltekit-noscroll
 	>
 		<div class="row">
-			<a class="pfp" href={resolve('/')} aria-label="homepage">
+			<a class="pfp" href={resolve('/')} aria-label="homepage /_manyuuu">
 				<LogoAnimated skipInitialAnimation={true} />
 			</a>
-			<a class="name" href={resolve('/')}>_manyuuu</a>
+			<a class="name" href={resolve('/')} aria-label="/_manyuuu">/_manyuuu</a>
 		</div>
 		<nav>
 			{#each pages as { name, path } (path)}

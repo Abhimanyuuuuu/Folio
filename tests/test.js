@@ -20,9 +20,9 @@ test('portfolio pages, content counts, interactions, and responsive home render'
 
 	await page.setViewportSize({ width: 1440, height: 900 });
 	await page.goto(route());
-	await expect(page.getByRole('heading', { name: '_manyuuu' })).toBeVisible();
+	await expect(page.getByRole('heading', { name: '/_manyuuu' })).toBeVisible();
 	await expect(page.locator('header')).toHaveCount(0);
-	await expect(page).toHaveTitle('_manyuuu');
+	await expect(page).toHaveTitle('/_manyuuu');
 	await expect(
 		page.getByText(
 			"Hey there! I'm Abhimanyu. I like making things that solve something and work efficiently."
@@ -53,16 +53,43 @@ test('portfolio pages, content counts, interactions, and responsive home render'
 	await expect(page.locator('header')).toBeVisible();
 	await expect(page.locator('.posts > a')).toHaveCount(0);
 
-	await page.goto(route('/photos/'));
+	await page.goto(route('/stuff/'));
 	await expect(page.locator('header')).toBeVisible();
-	await expect(page.locator('.grid picture')).toHaveCount(1);
+	await expect(page.getByRole('heading', { name: /random clicks/ })).toBeVisible();
+	await expect(page.getByRole('heading', { name: /probably listening to/ })).toBeVisible();
+	await expect(page.getByRole('heading', { name: /recent reads/ })).toBeVisible();
+	await expect(page.locator('.photos-grid picture')).toHaveCount(1);
 	await expect
-		.poll(() => page.locator('.grid img').evaluate((image) => image.naturalWidth))
+		.poll(() => page.locator('.photos-grid img').evaluate((image) => image.naturalWidth))
 		.toBeGreaterThan(0);
+	const stuffBounds = await page.locator('main.stuff').boundingBox();
+	const clicksBounds = await page.locator('.clicks').boundingBox();
+	const rightBounds = await page.locator('.right-side').boundingBox();
+	expect(Math.abs(clicksBounds.width / stuffBounds.width - 0.5)).toBeLessThan(0.01);
+	expect(Math.abs(rightBounds.width / stuffBounds.width - 0.5)).toBeLessThan(0.01);
+	await expect(page.locator('.photos-grid')).toHaveCSS('grid-template-columns', /\S+\s+\S+/);
+	await expect(page.locator('.photo-scroll')).toHaveCSS('overflow-y', 'auto');
+	await expect(page.locator('.right-side')).toHaveCSS('overflow', 'hidden');
+	await expect
+		.poll(() => page.evaluate(() => document.documentElement.scrollHeight <= window.innerHeight))
+		.toBe(true);
+	await page.screenshot({ path: 'test-results/stuff-desktop.png', fullPage: true });
+	await page.locator('.music .covers').evaluate((container) => {
+		const figure = document.createElement('figure');
+		const caption = document.createElement('figcaption');
+		caption.textContent = 'hover label check';
+		figure.append(caption);
+		container.append(figure);
+	});
+	const hoverFixture = page.locator('.music .covers figure').last();
+	await hoverFixture.hover();
+	await expect(hoverFixture.locator('figcaption')).toHaveCSS('opacity', '1');
+	await page.goto(route('/photos/'));
+	await expect(page).toHaveURL(new RegExp(`${basePath}/stuff/?$`));
 
 	await page.goto(route('/about/'));
 	await expect(page.locator('header')).toBeVisible();
-	await expect(page.locator('header .name')).toHaveText('_manyuuu');
+	await expect(page.locator('header .name')).toHaveText('/_manyuuu');
 	await expect(page.getByRole('heading', { name: 'about' })).toBeVisible();
 	await expect(
 		page.getByText(
@@ -107,7 +134,7 @@ test('portfolio pages, content counts, interactions, and responsive home render'
 
 	await page.goto(route('/inspo/'));
 	await expect(page).toHaveURL(new RegExp(`${basePath}/?$`));
-	await expect(page.getByRole('heading', { name: '_manyuuu' })).toBeVisible();
+	await expect(page.getByRole('heading', { name: '/_manyuuu' })).toBeVisible();
 	await expect(page.locator('header')).toHaveCount(0);
 
 	await page.goto(route('/contact/'));
@@ -116,10 +143,19 @@ test('portfolio pages, content counts, interactions, and responsive home render'
 	await expect(page.locator('form')).toHaveCount(0);
 
 	await page.setViewportSize({ width: 390, height: 844 });
+	await page.goto(route('/stuff/'));
+	await expect(page.locator('main.stuff')).toHaveCSS('flex-direction', 'column');
+	await expect(page.locator('.stuff')).toHaveCSS('overflow-y', 'visible');
+	await expect(page.locator('.clicks')).toHaveCSS('border-bottom-width', '1px');
+	await expect(page.locator('.music')).toHaveCSS('border-bottom-width', '1px');
+	await expect
+		.poll(() => page.evaluate(() => document.documentElement.scrollWidth))
+		.toBeLessThanOrEqual(390);
+	await page.screenshot({ path: 'test-results/stuff-mobile.png', fullPage: true });
 	await page.goto(route());
-	await expect(page.getByRole('heading', { name: '_manyuuu' })).toBeVisible();
+	await expect(page.getByRole('heading', { name: '/_manyuuu' })).toBeVisible();
 	await expect(page.locator('header')).toHaveCount(0);
-	await expect(page).toHaveTitle('_manyuuu');
+	await expect(page).toHaveTitle('/_manyuuu');
 	await expect(page.locator('main nav')).toHaveCSS('flex-direction', 'column');
 	await page.screenshot({ path: 'test-results/home-mobile.png', fullPage: true });
 	await expect(pageErrors).toEqual([]);
