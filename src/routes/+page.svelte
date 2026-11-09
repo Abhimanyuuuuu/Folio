@@ -21,7 +21,7 @@
 				<LogoAnimated onAnimationComplete={handleLogoAnimationComplete} />
 			</div>
 		</div>
-		<p>Hey there! I'm Abhimanyu. I like making things that solve something and work efficiently.</p>
+		<p>hey there! i'm abhimanyu. i like making things that solve something and work efficiently.</p>
 		<nav>
 			<a class="nav" href={resolve('/about')}>
 				<Arrow /><span class="slash" aria-hidden="true">/</span>about
